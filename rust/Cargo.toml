@@ -2,7 +2,11 @@
 name = "jot-proto"
 version = "1.0.0"
 edition = "2024"
+description = "Protobuf types and gRPC bindings for JOT protocols"
 license = "Apache-2.0"
+repository = "https://github.com/judge-master/JOT-Proto"
+readme = "README.md"
+exclude = ["generate.sh"]
 
 [dependencies]
 prost = "0.14.4"
