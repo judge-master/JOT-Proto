@@ -1,0 +1,10 @@
+[package]
+name = "jot-proto"
+version = "1.0.0"
+edition = "2024"
+license = "Apache-2.0"
+
+[dependencies]
+prost = "0.14.4"
+tonic = "0.14.6"
+tonic-prost = "0.14.6"
