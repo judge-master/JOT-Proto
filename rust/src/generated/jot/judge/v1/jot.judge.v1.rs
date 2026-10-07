@@ -70,9 +70,10 @@ pub struct JudgeResult {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Language {
-    Cpp = 0,
-    Rust = 1,
-    Go = 2,
+    C = 0,
+    Cpp = 1,
+    Rust = 2,
+    Go = 3,
 }
 impl Language {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -81,6 +82,7 @@ impl Language {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
+            Self::C => "LANGUAGE_C",
             Self::Cpp => "LANGUAGE_CPP",
             Self::Rust => "LANGUAGE_RUST",
             Self::Go => "LANGUAGE_GO",
@@ -89,6 +91,7 @@ impl Language {
     /// Creates an enum from field names used in the ProtoBuf definition.
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
+            "LANGUAGE_C" => Some(Self::C),
             "LANGUAGE_CPP" => Some(Self::Cpp),
             "LANGUAGE_RUST" => Some(Self::Rust),
             "LANGUAGE_GO" => Some(Self::Go),

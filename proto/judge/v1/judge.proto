@@ -15,9 +15,10 @@ message JudgeRequest {
 }
 
 enum Language {
-  LANGUAGE_CPP = 0;
-  LANGUAGE_RUST = 1;
-  LANGUAGE_GO = 2;
+  LANGUAGE_C = 0;
+  LANGUAGE_CPP = 1;
+  LANGUAGE_RUST = 2;
+  LANGUAGE_GO = 3;
 }
 
 message ResourceLimits {
