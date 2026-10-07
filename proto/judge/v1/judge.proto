@@ -9,9 +9,10 @@ service JudgeService {
 message JudgeRequest {
   // Set by the backend to correlate the request, stream, and logs.
   int64 request_id = 1;
-  Language language = 2;
-  string source_code = 3;
-  ResourceLimits limits = 4;
+  int64 problem_id = 2;
+  Language language = 3;
+  string source_code = 4;
+  ResourceLimits limits = 5;
 }
 
 enum Language {

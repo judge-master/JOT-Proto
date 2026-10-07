@@ -5,11 +5,13 @@ pub struct JudgeRequest {
     /// Set by the backend to correlate the request, stream, and logs.
     #[prost(int64, tag = "1")]
     pub request_id: i64,
-    #[prost(enumeration = "Language", tag = "2")]
+    #[prost(int64, tag = "2")]
+    pub problem_id: i64,
+    #[prost(enumeration = "Language", tag = "3")]
     pub language: i32,
-    #[prost(string, tag = "3")]
+    #[prost(string, tag = "4")]
     pub source_code: ::prost::alloc::string::String,
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag = "5")]
     pub limits: ::core::option::Option<ResourceLimits>,
 }
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
