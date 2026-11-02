@@ -85,11 +85,11 @@ pub mod judge_result {
         #[prost(message, tag = "2")]
         WrongAnswer(super::JudgeWrongAnswer),
         #[prost(message, tag = "3")]
-        CompilationError(super::JudgeCompileError),
+        CompileError(super::JudgeCompileError),
         #[prost(message, tag = "4")]
-        CompilationTimeLimitExceeded(super::JudgeCompileTle),
+        CompileTle(super::JudgeCompileTle),
         #[prost(message, tag = "5")]
-        CompilationBuildArtifactLimitExceeded(super::JudgeCompileBle),
+        CompileBle(super::JudgeCompileBle),
         #[prost(message, tag = "6")]
         TimeLimitExceeded(super::JudgeTle),
         #[prost(message, tag = "7")]

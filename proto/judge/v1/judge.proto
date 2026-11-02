@@ -66,9 +66,9 @@ message JudgeResult {
   oneof verdict {
     JudgeComplete complete = 1;
     JudgeWrongAnswer wrong_answer = 2;
-    JudgeCompileError compilation_error = 3;
-    JudgeCompileTLE compilation_time_limit_exceeded = 4;
-    JudgeCompileBLE compilation_build_artifact_limit_exceeded = 5;
+    JudgeCompileError compile_error = 3;
+    JudgeCompileTLE compile_tle = 4;
+    JudgeCompileBLE compile_ble = 5;
     JudgeTLE time_limit_exceeded = 6;
     JudgeMLE memory_limit_exceeded = 7;
     JudgeBLE build_artifact_limit_exceeded = 8;
