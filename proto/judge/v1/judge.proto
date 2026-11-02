@@ -34,9 +34,9 @@ message ResourceLimits {
 
 message JudgeEvent {
   int64 request_id = 1;
-  
+
   oneof payload {
-    JudgeRecieved recieved = 2;
+    JudgeReceived recieved = 2;
     JudgeCompiling compiling = 3;
     JudgeFetchingTestCasesMetadata fetching_test_cases_metadata = 4;
     JudgeRunning running = 5;
@@ -45,7 +45,7 @@ message JudgeEvent {
   }
 }
 
-message JudgeRecieved {
+message JudgeReceived {
 }
 
 message JudgeCompiling {

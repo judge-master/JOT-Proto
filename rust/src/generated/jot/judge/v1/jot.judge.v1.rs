@@ -39,7 +39,7 @@ pub mod judge_event {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Payload {
         #[prost(message, tag = "2")]
-        Recieved(super::JudgeRecieved),
+        Recieved(super::JudgeReceived),
         #[prost(message, tag = "3")]
         Compiling(super::JudgeCompiling),
         #[prost(message, tag = "4")]
@@ -53,7 +53,7 @@ pub mod judge_event {
     }
 }
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct JudgeRecieved {
+pub struct JudgeReceived {
 }
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JudgeCompiling {
