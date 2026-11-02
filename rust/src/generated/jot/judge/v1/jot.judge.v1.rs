@@ -11,19 +11,14 @@ pub struct JudgeRequest {
     pub language: i32,
     #[prost(string, tag = "4")]
     pub source_code: ::prost::alloc::string::String,
-    #[prost(message, optional, tag = "5")]
-    pub limits: ::core::option::Option<ResourceLimits>,
-}
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ResourceLimits {
-    #[prost(uint64, tag = "1")]
-    pub compile_time_ms: u64,
-    #[prost(uint64, tag = "2")]
-    pub instruction_count: u64,
-    #[prost(uint64, tag = "3")]
-    pub memory_bytes: u64,
-    #[prost(uint64, tag = "4")]
-    pub build_artifact_bytes: u64,
+    #[prost(uint64, tag = "5")]
+    pub compile_time_ms_limit: u64,
+    #[prost(uint64, tag = "6")]
+    pub build_artifact_bytes_limit: u64,
+    #[prost(uint64, tag = "7")]
+    pub instruction_count_limit: u64,
+    #[prost(uint64, tag = "8")]
+    pub memory_bytes_limit: u64,
 }
 // Output
 

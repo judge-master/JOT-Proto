@@ -12,7 +12,11 @@ message JudgeRequest {
   int64 problem_id = 2;
   Language language = 3;
   string source_code = 4;
-  ResourceLimits limits = 5;
+  uint64 compile_time_ms_limit = 5;
+  uint64 build_artifact_bytes_limit = 6;
+  uint64 instruction_count_limit = 7;
+  uint64 memory_bytes_limit = 8;
+  
 }
 
 enum Language {
@@ -21,13 +25,6 @@ enum Language {
   LANGUAGE_RUST = 2;
   LANGUAGE_GO = 3;
   LANGUAGE_PYTHON = 4;
-}
-
-message ResourceLimits {
-  uint64 compile_time_ms = 1;
-  uint64 instruction_count = 2;
-  uint64 memory_bytes = 3;
-  uint64 build_artifact_bytes = 4;
 }
 
 // Output
