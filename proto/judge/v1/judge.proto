@@ -34,7 +34,7 @@ message ResourceLimits {
 
 message JudgeEvent {
   int64 request_id = 1;
-
+  
   oneof payload {
     JudgeRecieved recieved = 2;
     JudgeCompiling compiling = 3;
@@ -46,25 +46,20 @@ message JudgeEvent {
 }
 
 message JudgeRecieved {
-  int64 request_id = 1;
 }
 
 message JudgeCompiling {
-  int64 request_id = 1;
 }
 
 message JudgeFetchingTestCasesMetadata {
-  int64 request_id = 1;
 }
 
 message JudgeRunning {
-  int64 request_id = 1;
   uint32 completed_cases = 2;
   uint32 total_cases = 3;
 }
 
 message JudgeFinishing {
-  int64 request_id = 1;
 }
 
 message JudgeResult {

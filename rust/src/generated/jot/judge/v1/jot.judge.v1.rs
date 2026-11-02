@@ -54,23 +54,15 @@ pub mod judge_event {
 }
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JudgeRecieved {
-    #[prost(int64, tag = "1")]
-    pub request_id: i64,
 }
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JudgeCompiling {
-    #[prost(int64, tag = "1")]
-    pub request_id: i64,
 }
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JudgeFetchingTestCasesMetadata {
-    #[prost(int64, tag = "1")]
-    pub request_id: i64,
 }
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JudgeRunning {
-    #[prost(int64, tag = "1")]
-    pub request_id: i64,
     #[prost(uint32, tag = "2")]
     pub completed_cases: u32,
     #[prost(uint32, tag = "3")]
@@ -78,8 +70,6 @@ pub struct JudgeRunning {
 }
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JudgeFinishing {
-    #[prost(int64, tag = "1")]
-    pub request_id: i64,
 }
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JudgeResult {
