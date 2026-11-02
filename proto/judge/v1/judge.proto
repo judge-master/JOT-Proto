@@ -68,10 +68,11 @@ message JudgeResult {
     JudgeWrongAnswer wrong_answer = 2;
     JudgeCompileError compilation_error = 3;
     JudgeCompileTLE compilation_time_limit_exceeded = 4;
-    JudgeTLE time_limit_exceeded = 5;
-    JudgeMLE memory_limit_exceeded = 6;
-    JudgeBLE build_artifact_limit_exceeded = 7;
-    JudgeSystemError system_error = 8;
+    JudgeCompileBLE compilation_build_artifact_limit_exceeded = 5;
+    JudgeTLE time_limit_exceeded = 6;
+    JudgeMLE memory_limit_exceeded = 7;
+    JudgeBLE build_artifact_limit_exceeded = 8;
+    JudgeSystemError system_error = 9;
   }
 }
 
@@ -92,6 +93,10 @@ message JudgeCompileError {
 
 message JudgeCompileTLE {
   uint64 max_compile_time_ms = 1;
+}
+
+message JudgeCompileBLE {
+  uint64 max_build_artifact_bytes = 1;
 }
 
 message JudgeTLE {
