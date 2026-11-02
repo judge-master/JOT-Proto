@@ -20,6 +20,7 @@ enum Language {
   LANGUAGE_CPP = 1;
   LANGUAGE_RUST = 2;
   LANGUAGE_GO = 3;
+  LANGUAGE_PYTHON = 4;
 }
 
 message ResourceLimits {
@@ -35,48 +36,81 @@ message JudgeEvent {
   int64 request_id = 1;
 
   oneof payload {
-    JudgeProgress progress = 2;
-    JudgeResult result = 3;
+    JudgeRecieved recieved = 2;
+    JudgeCompiling compiling = 3;
+    JudgeFetchingTestCasesMetadata fetching_test_cases_metadata = 4;
+    JudgeRunning running = 5;
+    JudgeFinishing finishing = 6;
+    JudgeResult result = 7;
   }
 }
 
-message JudgeProgress {
-  JudgePhase phase = 1;
+message JudgeRecieved {
+  int64 request_id = 1;
+}
+
+message JudgeCompiling {
+  int64 request_id = 1;
+}
+
+message JudgeFetchingTestCasesMetadata {
+  int64 request_id = 1;
+}
+
+message JudgeRunning {
+  int64 request_id = 1;
   uint32 completed_cases = 2;
   uint32 total_cases = 3;
 }
 
-enum JudgePhase {
-  JUDGE_PHASE_UNSPECIFIED = 0;
-  JUDGE_PHASE_RECEIVED = 1;
-  JUDGE_PHASE_COMPILING = 2;
-  JUDGE_PHASE_FETCHING_CASES = 3;
-  JUDGE_PHASE_RUNNING = 4;
-  JUDGE_PHASE_VALIDATING = 5;
+message JudgeFinishing {
+  int64 request_id = 1;
 }
 
 message JudgeResult {
-  Verdict verdict = 1;
-
-  // Present only for VERDICT_ACCEPTED. Limit-exceeded results carry only the verdict.
-  optional uint64 max_instruction_count = 2;
-  optional uint64 max_memory_bytes = 3;
-
-  // Populated for a compilation failure; capped by the server. May be blank if no error or warning occurred.
-  string compiler_diagnostics = 4;
-
-  // Present only for VERDICT_SYSTEM_ERROR.
-  optional string error_message = 5;
+  oneof verdict {
+    JudgeComplete complete = 1;
+    JudgeWrongAnswer wrong_answer = 2;
+    JudgeCompileError compilation_error = 3;
+    JudgeCompileTLE compilation_time_limit_exceeded = 4;
+    JudgeTLE time_limit_exceeded = 5;
+    JudgeMLE memory_limit_exceeded = 6;
+    JudgeBLE build_artifact_limit_exceeded = 7;
+    JudgeSystemError system_error = 8;
+  }
 }
 
-enum Verdict {
-  VERDICT_UNSPECIFIED = 0;
-  VERDICT_ACCEPTED = 1;
-  VERDICT_WRONG_ANSWER = 2;
-  VERDICT_COMPILATION_ERROR = 3;
-  VERDICT_RUNTIME_ERROR = 4;
-  VERDICT_TIME_LIMIT_EXCEEDED = 5;
-  VERDICT_MEMORY_LIMIT_EXCEEDED = 6;
-  VERDICT_BUILD_ARTIFACT_LIMIT_EXCEEDED = 7;
-  VERDICT_SYSTEM_ERROR = 8;
+message JudgeComplete {
+  uint32 correct_subproblems = 1;
+  uint32 total_subproblems = 2;
+  uint64 instruction_count = 3;
+  uint64 memory_bytes = 4;
+}
+
+message JudgeWrongAnswer {
+  string message = 1;
+}
+
+message JudgeCompileError {
+  string compiler_diagnostics = 1;
+}
+
+message JudgeCompileTLE {
+  uint64 max_compile_time_ms = 1;
+}
+
+message JudgeTLE {
+  uint64 max_instruction_count = 1;
+}
+
+message JudgeMLE {
+  uint64 max_memory_bytes = 1;
+}
+
+message JudgeBLE {
+  uint64 max_build_artifact_bytes = 1;
+}
+
+message JudgeSystemError {
+  string error_message = 1;
 }

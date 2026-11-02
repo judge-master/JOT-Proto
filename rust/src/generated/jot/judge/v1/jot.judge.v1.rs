@@ -31,7 +31,7 @@ pub struct ResourceLimits {
 pub struct JudgeEvent {
     #[prost(int64, tag = "1")]
     pub request_id: i64,
-    #[prost(oneof = "judge_event::Payload", tags = "2, 3")]
+    #[prost(oneof = "judge_event::Payload", tags = "2, 3, 4, 5, 6, 7")]
     pub payload: ::core::option::Option<judge_event::Payload>,
 }
 /// Nested message and enum types in `JudgeEvent`.
@@ -39,35 +39,120 @@ pub mod judge_event {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Payload {
         #[prost(message, tag = "2")]
-        Progress(super::JudgeProgress),
+        Recieved(super::JudgeRecieved),
         #[prost(message, tag = "3")]
+        Compiling(super::JudgeCompiling),
+        #[prost(message, tag = "4")]
+        FetchingTestCasesMetadata(super::JudgeFetchingTestCasesMetadata),
+        #[prost(message, tag = "5")]
+        Running(super::JudgeRunning),
+        #[prost(message, tag = "6")]
+        Finishing(super::JudgeFinishing),
+        #[prost(message, tag = "7")]
         Result(super::JudgeResult),
     }
 }
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct JudgeProgress {
-    #[prost(enumeration = "JudgePhase", tag = "1")]
-    pub phase: i32,
+pub struct JudgeRecieved {
+    #[prost(int64, tag = "1")]
+    pub request_id: i64,
+}
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeCompiling {
+    #[prost(int64, tag = "1")]
+    pub request_id: i64,
+}
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeFetchingTestCasesMetadata {
+    #[prost(int64, tag = "1")]
+    pub request_id: i64,
+}
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeRunning {
+    #[prost(int64, tag = "1")]
+    pub request_id: i64,
     #[prost(uint32, tag = "2")]
     pub completed_cases: u32,
     #[prost(uint32, tag = "3")]
     pub total_cases: u32,
 }
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeFinishing {
+    #[prost(int64, tag = "1")]
+    pub request_id: i64,
+}
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JudgeResult {
-    #[prost(enumeration = "Verdict", tag = "1")]
-    pub verdict: i32,
-    /// Present only for VERDICT_ACCEPTED. Limit-exceeded results carry only the verdict.
-    #[prost(uint64, optional, tag = "2")]
-    pub max_instruction_count: ::core::option::Option<u64>,
-    #[prost(uint64, optional, tag = "3")]
-    pub max_memory_bytes: ::core::option::Option<u64>,
-    /// Populated for a compilation failure; capped by the server. May be blank if no error or warning occurred.
-    #[prost(string, tag = "4")]
+    #[prost(oneof = "judge_result::Verdict", tags = "1, 2, 3, 4, 5, 6, 7, 8")]
+    pub verdict: ::core::option::Option<judge_result::Verdict>,
+}
+/// Nested message and enum types in `JudgeResult`.
+pub mod judge_result {
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Verdict {
+        #[prost(message, tag = "1")]
+        Complete(super::JudgeComplete),
+        #[prost(message, tag = "2")]
+        WrongAnswer(super::JudgeWrongAnswer),
+        #[prost(message, tag = "3")]
+        CompilationError(super::JudgeCompileError),
+        #[prost(message, tag = "4")]
+        CompilationTimeLimitExceeded(super::JudgeCompileTle),
+        #[prost(message, tag = "5")]
+        TimeLimitExceeded(super::JudgeTle),
+        #[prost(message, tag = "6")]
+        MemoryLimitExceeded(super::JudgeMle),
+        #[prost(message, tag = "7")]
+        BuildArtifactLimitExceeded(super::JudgeBle),
+        #[prost(message, tag = "8")]
+        SystemError(super::JudgeSystemError),
+    }
+}
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeComplete {
+    #[prost(uint32, tag = "1")]
+    pub correct_subproblems: u32,
+    #[prost(uint32, tag = "2")]
+    pub total_subproblems: u32,
+    #[prost(uint64, tag = "3")]
+    pub instruction_count: u64,
+    #[prost(uint64, tag = "4")]
+    pub memory_bytes: u64,
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeWrongAnswer {
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeCompileError {
+    #[prost(string, tag = "1")]
     pub compiler_diagnostics: ::prost::alloc::string::String,
-    /// Present only for VERDICT_SYSTEM_ERROR.
-    #[prost(string, optional, tag = "5")]
-    pub error_message: ::core::option::Option<::prost::alloc::string::String>,
+}
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeCompileTle {
+    #[prost(uint64, tag = "1")]
+    pub max_compile_time_ms: u64,
+}
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeTle {
+    #[prost(uint64, tag = "1")]
+    pub max_instruction_count: u64,
+}
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeMle {
+    #[prost(uint64, tag = "1")]
+    pub max_memory_bytes: u64,
+}
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeBle {
+    #[prost(uint64, tag = "1")]
+    pub max_build_artifact_bytes: u64,
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct JudgeSystemError {
+    #[prost(string, tag = "1")]
+    pub error_message: ::prost::alloc::string::String,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -76,6 +161,7 @@ pub enum Language {
     Cpp = 1,
     Rust = 2,
     Go = 3,
+    Python = 4,
 }
 impl Language {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -88,6 +174,7 @@ impl Language {
             Self::Cpp => "LANGUAGE_CPP",
             Self::Rust => "LANGUAGE_RUST",
             Self::Go => "LANGUAGE_GO",
+            Self::Python => "LANGUAGE_PYTHON",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -97,91 +184,7 @@ impl Language {
             "LANGUAGE_CPP" => Some(Self::Cpp),
             "LANGUAGE_RUST" => Some(Self::Rust),
             "LANGUAGE_GO" => Some(Self::Go),
-            _ => None,
-        }
-    }
-}
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum JudgePhase {
-    Unspecified = 0,
-    Received = 1,
-    Compiling = 2,
-    FetchingCases = 3,
-    Running = 4,
-    Validating = 5,
-}
-impl JudgePhase {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            Self::Unspecified => "JUDGE_PHASE_UNSPECIFIED",
-            Self::Received => "JUDGE_PHASE_RECEIVED",
-            Self::Compiling => "JUDGE_PHASE_COMPILING",
-            Self::FetchingCases => "JUDGE_PHASE_FETCHING_CASES",
-            Self::Running => "JUDGE_PHASE_RUNNING",
-            Self::Validating => "JUDGE_PHASE_VALIDATING",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "JUDGE_PHASE_UNSPECIFIED" => Some(Self::Unspecified),
-            "JUDGE_PHASE_RECEIVED" => Some(Self::Received),
-            "JUDGE_PHASE_COMPILING" => Some(Self::Compiling),
-            "JUDGE_PHASE_FETCHING_CASES" => Some(Self::FetchingCases),
-            "JUDGE_PHASE_RUNNING" => Some(Self::Running),
-            "JUDGE_PHASE_VALIDATING" => Some(Self::Validating),
-            _ => None,
-        }
-    }
-}
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum Verdict {
-    Unspecified = 0,
-    Accepted = 1,
-    WrongAnswer = 2,
-    CompilationError = 3,
-    RuntimeError = 4,
-    TimeLimitExceeded = 5,
-    MemoryLimitExceeded = 6,
-    BuildArtifactLimitExceeded = 7,
-    SystemError = 8,
-}
-impl Verdict {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            Self::Unspecified => "VERDICT_UNSPECIFIED",
-            Self::Accepted => "VERDICT_ACCEPTED",
-            Self::WrongAnswer => "VERDICT_WRONG_ANSWER",
-            Self::CompilationError => "VERDICT_COMPILATION_ERROR",
-            Self::RuntimeError => "VERDICT_RUNTIME_ERROR",
-            Self::TimeLimitExceeded => "VERDICT_TIME_LIMIT_EXCEEDED",
-            Self::MemoryLimitExceeded => "VERDICT_MEMORY_LIMIT_EXCEEDED",
-            Self::BuildArtifactLimitExceeded => "VERDICT_BUILD_ARTIFACT_LIMIT_EXCEEDED",
-            Self::SystemError => "VERDICT_SYSTEM_ERROR",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "VERDICT_UNSPECIFIED" => Some(Self::Unspecified),
-            "VERDICT_ACCEPTED" => Some(Self::Accepted),
-            "VERDICT_WRONG_ANSWER" => Some(Self::WrongAnswer),
-            "VERDICT_COMPILATION_ERROR" => Some(Self::CompilationError),
-            "VERDICT_RUNTIME_ERROR" => Some(Self::RuntimeError),
-            "VERDICT_TIME_LIMIT_EXCEEDED" => Some(Self::TimeLimitExceeded),
-            "VERDICT_MEMORY_LIMIT_EXCEEDED" => Some(Self::MemoryLimitExceeded),
-            "VERDICT_BUILD_ARTIFACT_LIMIT_EXCEEDED" => Some(Self::BuildArtifactLimitExceeded),
-            "VERDICT_SYSTEM_ERROR" => Some(Self::SystemError),
+            "LANGUAGE_PYTHON" => Some(Self::Python),
             _ => None,
         }
     }
