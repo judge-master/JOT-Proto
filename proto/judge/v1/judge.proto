@@ -33,7 +33,7 @@ message JudgeEvent {
   int64 request_id = 1;
 
   oneof payload {
-    JudgeReceived recieved = 2;
+    JudgeReceived received = 2;
     JudgeCompiling compiling = 3;
     JudgeFetchingTestCasesMetadata fetching_test_cases_metadata = 4;
     JudgeRunning running = 5;
